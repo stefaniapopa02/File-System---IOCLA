@@ -1,0 +1,90 @@
+    Sistemul de fisiere va avea o radacina(home) si mai multe directoare si
+fisiere, retinute intr-o lista de directoare respectiv o lista de fisiere in 
+ordinea crearii lor. Fiecare director poate contine la randul lui directoare
+si fisiere. 
+    *In prima parte am implementat functiile necesare crearii sistemului 
+de fisiere: 
+    (1)-functii de creare a radacinii, a unui director si a unui fisier,
+    in care am alocat si initializat campurile din structura respectiva
+
+    (2)-functii de adaugare (la sfarsitul listei) a unui nou fisier sau
+    director; daca este primul fisier/director, capul listei va pointa 
+    chiar la el, altfel acesta va fi adaugat la sfarsit, capul listei
+    ramanand nemodificat
+
+    (3)-functii care verifica daca in directorul curent exista un fisier 
+    respectiv un director cu un anumit nume(verificam numele fiecarui 
+    element din lista de fisiere/directoare); in caz afirmativ, returneaza
+    fisierul/directorul cu numele dat
+
+    (4)-functia de eliberare a memoriei unui fisier: eliberam campul numelui
+    alocat dinamic anterior si structura in sine
+    (5)-functia de eliberare a memoriei unui director, ce se foloseste de 
+    functia anterioara pentru a elibera memoria ocupata de fisierele din 
+    directorul respectiv; pentru fiecare director din directorul curent, 
+    aceasta functie este reapelata si astfel, in mod recursiv este eliberata
+    toata memoria ocupata de directorul de la care am pornit si de continutul 
+    sau; desigur ca pentru fiecare director eliberam spatiul ocupat de numele sau,
+    dar si structura in sine
+
+
+    *In a doua parte implementam functiile cerute, ajutandu-ne de functiile
+create in prima parte:
+    -touch: se foloseste de functia de adaugare a unui fisier(2)
+
+    -mkdir: se foloseste de functia de adaugare a unui director(2)
+
+    -ls: parcurge lista de directoare si le afiseaza, procedand apoi similar 
+    pentrulista de fisiere  
+
+    -rm: cauta(dupa nume) fisierul ce trebuie sters si reface legaturile din
+    lista in mod coresounzator; la sfarsit eliberam si memoria ocupata de 
+    fisierul eliminat,folosind functia (4)
+
+    -rm_dir: cauta(dupa nume) directorul ce trebuie sters si reface legaturile
+    din lista in mod coresounzator; la sfarsit eliberam si memoria ocupata de 
+    directorul eliminat,folosind functiia (5)
+
+    -cd: pentru folosirea "cd .." schimbam directorul curent cu parintele
+    acestuia; altfel,ne folosim de functia (3) pentru a gasi directorul cu 
+    numele dat si actualizam directorul curent
+
+    -pwd: construim calea de la directorul curent catre home, pornind de la 
+    directorul curent;calea va fi retinuta sub forma unui sir de caractere; 
+    retinem intr-o variabila auxiliara(temp)numele directorului curent; concatenam 
+    la acesta calea obtinuta pana la pasul anterior, rezultand astfel calea pana 
+    la pasul curent; calea(path) va fi actualizata cu cea obtinuta pana la pasul
+    curent(si retinuta in variabila "temp"); functia este una recursiva si este 
+    reapelata pentru parintele directorului curent pana ce ajungem la radacina(home)
+
+    -stop: functie ce marcheaza oprirea aplicatiei
+
+    -tree: functie recursiva ce porneste  de la directorul curent si afiseaza 
+    numele directoarelor (fisierelor) in functie de nivelul iererhic pe care se 
+    afla; functia este reapelata pentru fiecare director din interiorul 
+    directorului curent, iar mai apoi se face afisarea fisierelor din directorul 
+    curent; astfel mai intai sunt afisate toate directoarele (coresounzator nivelului 
+    fiecaruia), ca de abia apoi (cand ne intoarcem din recursivitate) sa fie efectuata 
+    si afisarea fisierelor
+
+    -mv: functie ce schimba numele pt un fisier sau un director numit 'oldname' in 
+    'newname', mutandu-l la sfarsitul listei; cautam in lista de fisiere respectiv
+    de directoare a directorului curent pentru a vedea daca numele 'oldname' apartine 
+    unui fisier sau unui director
+        --caz1: fisier: am facut o functie aditionala, mv_file, in care tratam toate cazurile:
+            -directorul curent contine un singur fisier si acela este chiar cel cautat
+            (cu numele 'oldname'): doar actualizam numele
+            -directorul are mai multe fisiere si fisierul cautat este chiar primul din 
+            director: actualizam capul listei, ii actualizam numele si il punem la sfarsitul 
+            listei
+            -directorul are mai multe fisiere si fisierul cautat este ultimul din director:
+             doar actualizam numele fisierului
+            -directorul are mai multe fisiere si fisierul cautat nu este nici primul, nici 
+            ultimul: gasim fisierul cu numele cautat, refacem legaturile in lista, actualizam 
+            numele si adaugam fisierul la sfarsitul listei
+        --caz2: director: am facut o functie aditionala, mv_dir, in care tratam toate cazurile,
+        in mod analog cazului1
+
+    Am alocat dinamic memoria pentru toate string-urile si structurile folosite si la sfarsit am
+eliberat memoria apeland functia (5) pe directorul radacina(home).
+
